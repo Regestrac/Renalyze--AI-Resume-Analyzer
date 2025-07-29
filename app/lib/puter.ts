@@ -9,6 +9,13 @@ declare global {
         signIn: () => Promise<void>;
         signOut: () => Promise<void>;
       };
+      fs: {
+        write: (path: string, data: string | File | Blob) => Promise<File | undefined>;
+        read: (path: string) => Promise<Blob>;
+        upload: (file: File[] | Blob[]) => Promise<FSItem>;
+        delete: (path: string) => Promise<void>;
+        readdir: (path: string) => Promise<FSItem[] | undefined>;
+      };
     }
   }
 };
@@ -25,6 +32,16 @@ type PuterStoreType = {
     signOut: () => Promise<void>;
     checkAuthStatus: () => Promise<boolean>;
     getUser: () => PuterUser | null;
+  };
+  fs: {
+    write: (
+      path: string,
+      data: string | File | Blob
+    ) => Promise<File | undefined>;
+    read: (path: string) => Promise<Blob | undefined>;
+    upload: (file: File[] | Blob[]) => Promise<FSItem | undefined>;
+    delete: (path: string) => Promise<void>;
+    readDir: (path: string) => Promise<FSItem[] | undefined>;
   };
 };
 
@@ -163,7 +180,52 @@ export const usePuterStore = create<PuterStoreType>((set, get) => {
         setError("Puter.js failed to load within 10 seconds")
       }
     }, 10000)
-  }
+  };
+
+  const write = async (path: string, data: string | File | Blob) => {
+    const puter = getPuter();
+    if (!puter) {
+      setError("Puter.js not available");
+      return;
+    }
+    return puter.fs.write(path, data);
+  };
+
+  const readDir = async (path: string) => {
+    const puter = getPuter();
+    if (!puter) {
+      setError("Puter.js not available");
+      return;
+    }
+    return puter.fs.readdir(path);
+  };
+
+  const readFile = async (path: string) => {
+    const puter = getPuter();
+    if (!puter) {
+      setError("Puter.js not available");
+      return;
+    }
+    return puter.fs.read(path);
+  };
+
+  const upload = async (files: File[] | Blob[]) => {
+    const puter = getPuter();
+    if (!puter) {
+      setError("Puter.js not available");
+      return;
+    }
+    return puter.fs.upload(files);
+  };
+
+  const deleteFile = async (path: string) => {
+    const puter = getPuter();
+    if (!puter) {
+      setError("Puter.js not available");
+      return;
+    }
+    return puter.fs.delete(path);
+  };
 
   return {
     isLoading: true,
@@ -177,6 +239,13 @@ export const usePuterStore = create<PuterStoreType>((set, get) => {
       signOut,
       checkAuthStatus,
       getUser: () => get().auth.user,
-    }
+    },
+    fs: {
+      write: (path: string, data: string | File | Blob) => write(path, data),
+      read: (path: string) => readFile(path),
+      readDir: (path: string) => readDir(path),
+      upload: (files: File[] | Blob[]) => upload(files),
+      delete: (path: string) => deleteFile(path),
+    },
   }
 })
