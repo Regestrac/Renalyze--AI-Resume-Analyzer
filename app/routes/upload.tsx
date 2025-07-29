@@ -2,6 +2,7 @@ import { useState, type FormEvent } from 'react'
 import { useNavigate } from 'react-router';
 import FileUploader from '~/components/FileUploader';
 import Navbar from '~/components/Navbar';
+import { AIResponseFormat, prepareInstructions } from '~/constants';
 import { convertPdfToImage } from '~/lib/pdf2img';
 import { usePuterStore } from '~/lib/puter';
 import { generateUUID } from '~/lib/utils';
@@ -19,6 +20,8 @@ const Upload = () => {
   const [file, setFile] = useState<File | null>(null)
 
   const upload = usePuterStore((state) => state.fs.upload)
+  const kv = usePuterStore((state) => state.kv)
+  const ai = usePuterStore((state) => state.ai)
 
   const navigate = useNavigate();
 
@@ -54,6 +57,24 @@ const Upload = () => {
       jobDescription,
       feedback: '',
     }
+    await kv.set(`resume:${uuid}`, JSON.stringify(data))
+
+    setStatusText("Analyzing...");
+
+    const feedback = await ai.feedback(
+      uploadedFile.path,
+      prepareInstructions({ jobTitle, jobDescription, AIResponseFormat })
+    )
+    if (!feedback) {
+      return setStatusText('Error: Failed to analyze resume');
+    }
+    const feedbackText = typeof feedback.message.content === 'string'
+      ? feedback.message.content : feedback.message.content[0];
+
+    data.feedback = JSON.parse(feedbackText);
+    await kv.set(`resume:${uuid}`, JSON.stringify(data));
+    setStatusText("Analysis complete, redirecting...");
+    console.log('data: ', data);
   }
 
   const handleFileSelect = (file: File | null) => {
