@@ -3,7 +3,12 @@ import { create } from "zustand";
 declare global {
   interface Window {
     puter: {
-
+      auth: {
+        getUser: () => Promise<PuterUser>;
+        isSignedIn: () => Promise<boolean>;
+        signIn: () => Promise<void>;
+        signOut: () => Promise<void>;
+      };
     }
   }
 };
@@ -13,6 +18,14 @@ type PuterStoreType = {
   puterReady: boolean;
   error: string | null;
   init: () => void;
+  auth: {
+    user: PuterUser | null;
+    isAuthenticated: boolean;
+    signIn: () => Promise<void>;
+    signOut: () => Promise<void>;
+    checkAuthStatus: () => Promise<boolean>;
+    getUser: () => PuterUser | null;
+  };
 };
 
 const getPuter = (): typeof window.puter | null => (
@@ -24,6 +37,14 @@ export const usePuterStore = create<PuterStoreType>((set, get) => {
     set({
       error: message,
       isLoading: false,
+      auth: {
+        user: null,
+        isAuthenticated: false,
+        signIn: get().auth.signIn,
+        signOut: get().auth.signOut,
+        checkAuthStatus: get().auth.checkAuthStatus,
+        getUser: get().auth.getUser,
+      },
     });
   };
 
@@ -34,15 +55,91 @@ export const usePuterStore = create<PuterStoreType>((set, get) => {
       return false;
     }
 
-    set({ isLoading: true, error: null })
+    set({ isLoading: true, error: null });
 
     try {
-
-      return true;
-    } catch {
+      const isSignedIn = await puter.auth.isSignedIn();
+      if (isSignedIn) {
+        const user = await puter.auth.getUser();
+        set({
+          auth: {
+            user,
+            isAuthenticated: true,
+            signIn: get().auth.signIn,
+            signOut: get().auth.signOut,
+            checkAuthStatus: get().auth.checkAuthStatus,
+            getUser: () => user,
+          },
+          isLoading: false,
+        });
+        return true;
+      } else {
+        set({
+          auth: {
+            user: null,
+            isAuthenticated: false,
+            signIn: get().auth.signIn,
+            signOut: get().auth.signOut,
+            checkAuthStatus: get().auth.checkAuthStatus,
+            getUser: () => null,
+          },
+          isLoading: false,
+        });
+        return false;
+      }
+    } catch (err) {
+      const msg =
+        err instanceof Error ? err.message : "Failed to check auth status";
+      setError(msg);
       return false;
     }
-  }
+  };
+
+  const signIn = async (): Promise<void> => {
+    const puter = getPuter();
+    if (!puter) {
+      setError("Puter.js not available");
+      return;
+    }
+
+    set({ isLoading: true, error: null });
+
+    try {
+      await puter.auth.signIn();
+      await checkAuthStatus();
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : "Sign in failed";
+      setError(msg);
+    }
+  };
+
+  const signOut = async (): Promise<void> => {
+    const puter = getPuter();
+    if (!puter) {
+      setError("Puter.js not available");
+      return;
+    }
+
+    set({ isLoading: true, error: null });
+
+    try {
+      await puter.auth.signOut();
+      set({
+        auth: {
+          user: null,
+          isAuthenticated: false,
+          signIn: get().auth.signIn,
+          signOut: get().auth.signOut,
+          checkAuthStatus: get().auth.checkAuthStatus,
+          getUser: () => null,
+        },
+        isLoading: false,
+      });
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : "Sign out failed";
+      setError(msg);
+    }
+  };
 
   const init = () => {
     const puter = getPuter();
@@ -73,5 +170,13 @@ export const usePuterStore = create<PuterStoreType>((set, get) => {
     puterReady: false,
     error: null,
     init,
+    auth: {
+      user: null,
+      isAuthenticated: false,
+      signIn,
+      signOut,
+      checkAuthStatus,
+      getUser: () => get().auth.user,
+    }
   }
 })
