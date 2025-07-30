@@ -41,6 +41,7 @@ type PuterStoreType = {
   puterReady: boolean;
   error: string | null;
   init: () => void;
+  clearError: () => void;
   auth: {
     user: PuterUser | null;
     isAuthenticated: boolean;
