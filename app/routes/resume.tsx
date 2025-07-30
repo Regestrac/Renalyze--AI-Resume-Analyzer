@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router'
+import Summary from '~/components/Summary';
 import { usePuterStore } from '~/lib/puter';
 
 export const meta = () => ([
@@ -10,7 +11,7 @@ export const meta = () => ([
 const Resume = () => {
   const [imageUrl, setImageUrl] = useState('');
   const [resumeUrl, setResumeUrl] = useState('');
-  const [feedback, setFeedback] = useState('');
+  const [feedback, setFeedback] = useState<Feedback | null>(null);
 
   const { auth, isLoading, fs, kv } = usePuterStore()
   const { id } = useParams();
@@ -74,7 +75,7 @@ const Resume = () => {
           <h2 className='text-4xl text-black font-bold'>Resume Review</h2>
           {feedback ? (
             <div className='flex flex-col animate-in fade-in duration-1000 gap-8'>
-              Summary ATS details
+              <Summary feedback={feedback} />
             </div>
           ) : (
             <img src="/images/resume-scan-2.gif" className='w-full' />
