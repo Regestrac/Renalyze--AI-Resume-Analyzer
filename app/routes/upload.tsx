@@ -30,6 +30,7 @@ const Upload = () => {
     setStatusText('Uploading the file...');
 
     const uploadedFile = await fs.upload([file]);
+    console.log('uploadedFile: ', uploadedFile);
     if (!uploadedFile) {
       return setStatusText("Error: Failed to upload file.")
     }
