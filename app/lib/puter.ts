@@ -191,7 +191,7 @@ export const usePuterStore = create<PuterStoreType>((set, get) => {
     }
   };
 
-  const init = () => {
+  const init = (): void => {
     const puter = getPuter();
     if (puter) {
       set({ puterReady: true });
@@ -205,14 +205,14 @@ export const usePuterStore = create<PuterStoreType>((set, get) => {
         set({ puterReady: true });
         checkAuthStatus();
       }
-    }, 100)
+    }, 100);
 
     setTimeout(() => {
       clearInterval(interval);
       if (!getPuter()) {
-        setError("Puter.js failed to load within 10 seconds")
+        setError("Puter.js failed to load within 10 seconds");
       }
-    }, 10000)
+    }, 10000);
   };
 
   const write = async (path: string, data: string | File | Blob) => {
@@ -348,7 +348,7 @@ export const usePuterStore = create<PuterStoreType>((set, get) => {
           ],
         },
       ],
-      { model: "claude-sonnet-4" }
+      { model: "claude-3-7-sonnet" }
     ) as Promise<AIResponse | undefined>;
   };
 
@@ -366,6 +366,7 @@ export const usePuterStore = create<PuterStoreType>((set, get) => {
     puterReady: false,
     error: null,
     init,
+    clearError: () => set({ error: null }),
     auth: {
       user: null,
       isAuthenticated: false,
