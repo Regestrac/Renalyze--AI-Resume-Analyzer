@@ -57,11 +57,11 @@ form {
   }
 
   .page-heading {
-    @apply flex flex-col items-center gap-8 max-w-4xl text-center max-sm:gap-4;
+    @apply flex flex-col items-center gap-8 max-w-5xl text-center max-sm:gap-4;
   }
 
   .navbar {
-    @apply flex flex-row justify-between items-center bg-white rounded-full p-4 w-full px-10 max-w-[1200px] mx-auto;
+    @apply flex flex-row justify-between items-center bg-white rounded-full p-4 px-10 w-full max-w-[1200px] mx-auto max-sm:w-[94%] max-sm:px-5 max-xl:w-[96%];
   }
 
   .primary-button {

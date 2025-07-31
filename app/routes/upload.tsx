@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from 'react'
 import { useNavigate } from 'react-router';
-import FileUploader from '~/components/FileUploader';
+import FileUploader from '~/components/shared/FileUploader';
 import Navbar from '~/components/Navbar';
 import { prepareInstructions } from '~/constants';
 import { convertPdfToImage } from '~/lib/pdf2img';
@@ -30,21 +30,18 @@ const Upload = () => {
     setStatusText('Uploading the file...');
 
     const uploadedFile = await fs.upload([file]);
-    console.log('uploadedFile: ', uploadedFile);
     if (!uploadedFile) {
       return setStatusText("Error: Failed to upload file.")
     }
 
     setStatusText("Converting to image...")
     const imageFile = await convertPdfToImage(file);
-    console.log('imageFile: ', imageFile);
     if (!imageFile.file) {
       return setStatusText("Error: Failed to convert pdf to image")
     }
 
     setStatusText("Uploading the image...")
     const uploadedImage = await fs.upload([imageFile.file]);
-    console.log('uploadedImage: ', uploadedImage);
     if (!uploadedImage) {
       return setStatusText("Error: Failed to upload image")
     }
@@ -68,7 +65,6 @@ const Upload = () => {
       uploadedFile.path,
       prepareInstructions({ jobTitle, jobDescription })
     )
-    console.log('feedback: ', feedback);
     if (!feedback) {
       return setStatusText('Error: Failed to analyze resume');
     }
@@ -80,7 +76,6 @@ const Upload = () => {
     await kv.set(`resume:${uuid}`, JSON.stringify(data));
 
     setStatusText("Analysis complete, redirecting...");
-    console.log('data: ', data);
     navigate(`/resume/${uuid}`);
   }
 
@@ -108,12 +103,12 @@ const Upload = () => {
     <main className="bg-[url('/images/bg-main.svg')] bg-cover">
       <Navbar />
       <section className="main-section">
-        <div className='page-heading py-16'>
-          <h1>Smart feedback for your dream job</h1>
+        <div className='page-heading py-12'>
+          <h1 className='w-full'>Smart Feedback For Your Dream Job</h1>
           {isProcessing ? (
             <>
               <h2>{statusText}</h2>
-              <img src='/images/resume-scan.gif' className='w-full' />
+              <img src='/images/resume-scan.gif' className='w-full max-md:mt-0! sm:w-[80%]' style={{ marginTop: -150 }} />
             </>
           ) : (
             <>
@@ -135,7 +130,7 @@ const Upload = () => {
                   <label htmlFor='uploader'>Upload Resume</label>
                   <FileUploader onFileSelect={handleFileSelect} />
                 </div>
-                <button type='submit' className='primary-button'>Upload</button>
+                <button type='submit' className='primary-button'>Analyze</button>
               </form>
             </>
           )}

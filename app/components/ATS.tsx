@@ -24,7 +24,7 @@ const ATS = ({ score, suggestions }: ATSPropsType) => {
       : '/icons/ats-bad.svg'
 
   return (
-    <div className={`bg-gradient-to-br ${gradientBg} to-white p-6 rounded-xl shadow-lg`}>
+    <div className={`bg-gradient-to-b ${gradientBg} to-white p-6 rounded-xl shadow-lg`}>
       {/* Top section with icon, score, and description */}
       <div className="flex items-start space-x-4 mb-6">
         <img src={icon} alt="ATS Status" className="w-12 h-12 flex-shrink-0" />

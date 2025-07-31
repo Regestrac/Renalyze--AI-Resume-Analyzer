@@ -7,22 +7,30 @@ type FileUploaderPropsType = {
 };
 
 const FileUploader = ({ onFileSelect }: FileUploaderPropsType) => {
+  const [file, setFile] = useState<File | null>(null);
+
   const onDrop = useCallback((acceptedFiles: File[]) => {
     const file = acceptedFiles[0] || null;
+    setFile(file);
 
     if (onFileSelect) {
       onFileSelect(file);
     }
   }, [onFileSelect])
 
-  const { getRootProps, getInputProps, isDragActive, acceptedFiles } = useDropzone({
+  const { getRootProps, getInputProps } = useDropzone({
     onDrop,
     multiple: false,
     accept: { 'application/pdf': ['.pdf'] },
     maxSize: 20 * 1024 * 1024,
   })
 
-  const file = acceptedFiles[0] || null;
+  const handleFileDelete = () => {
+    setFile(null);
+    if (onFileSelect) {
+      onFileSelect(null);
+    }
+  }
 
   return (
     <div className='w-full gradient-border'>
@@ -42,7 +50,7 @@ const FileUploader = ({ onFileSelect }: FileUploaderPropsType) => {
                   </p>
                 </div>
               </div>
-              <button type='button' className='p-2 cursor-pointer' onClick={() => onFileSelect?.(null)}>
+              <button type='button' className='p-2 cursor-pointer' onClick={handleFileDelete}>
                 <img src='icons/cross.svg' alt='close' className='w-4 h-4' />
               </button>
             </div>

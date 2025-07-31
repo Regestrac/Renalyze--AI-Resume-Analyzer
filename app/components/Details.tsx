@@ -1,11 +1,10 @@
-import React from 'react'
 import { cn } from '~/lib/utils'
 import {
   Accordion,
   AccordionItem,
   AccordionHeader,
   AccordionContent
-} from '~/components/Accordion'
+} from '~/components/shared/Accordion'
 
 interface Tip {
   type: 'good' | 'improve'
@@ -90,14 +89,21 @@ const CategoryHeader = ({ tips }: { tips: Tip[] }) => {
           <div
             key={index}
             className={cn(
-              'p-3 rounded-lg text-sm',
+              'p-3 rounded-lg text-md',
               tip.type === 'good'
-                ? 'bg-green-50 border border-green-200 text-green-800'
-                : 'bg-yellow-50 border border-yellow-200 text-yellow-800'
+                ? 'bg-green-50 border border-green-300 text-green-800'
+                : 'bg-yellow-50 border border-yellow-300 text-yellow-800'
             )}
           >
-            <p className="font-medium mb-1">{tip.tip}</p>
-            <p className="text-xs opacity-90">{tip.explanation}</p>
+            <div key={index} className="flex items-start space-x-2">
+              <img
+                src={tip.type === 'good' ? '/icons/check.svg' : '/icons/warning.svg'}
+                alt={tip.type}
+                className="w-4 h-4 mt-0.5 flex-shrink-0"
+              />
+              <p className="font-medium mb-1">{tip.tip}</p>
+            </div>
+            <p className="text-sm opacity-90">{tip.explanation}</p>
           </div>
         ))}
       </div>
@@ -144,8 +150,8 @@ const Details = ({ feedback }: DetailsProps) => {
               itemId={section.id}
               className="hover:bg-gray-50 px-4 py-3 border-b border-gray-100"
             >
-              <div className="flex items-center justify-between w-full">
-                <h3 className="text-lg font-semibold text-gray-800">
+              <div className="flex items-center justify-between w-full gap-2">
+                <h3 className="text-xl font-semibold text-gray-800">
                   {section.title}
                 </h3>
                 <ScoreBadge score={section.data.score} />

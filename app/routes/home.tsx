@@ -32,7 +32,6 @@ export default function Home() {
     const loadResumes = async () => {
       const resumes = await kv.list('resume:*', true) as KVItem[];
       const parsedResumes = resumes.map((resume) => JSON.parse(resume.value));
-      console.log('parsedResumes', parsedResumes);
       setResumes(parsedResumes);
       setIsLoading(false);
     }
@@ -42,13 +41,13 @@ export default function Home() {
   return (
     <main className="bg-[url('/images/bg-main.svg')] bg-cover">
       <Navbar />
-      <section className="main-section">
-        <div className="page-heading py-16">
+      <section className="main-section pb-12">
+        <div className="page-heading py-10">
           <h1>Track Your Applications & Resume Ratings</h1>
           {!isLoading && resumes.length > 0 ? (
-            <h2>No resumes found. Start by uploading your resume.</h2>
-          ) : (
             <h2>Review your submissions and check AI-powered feedback.</h2>
+          ) : (
+            <h2>No resumes found. Start by uploading your resume.</h2>
           )}
         </div>
         {isLoading ? (
