@@ -1,87 +1,60 @@
-# Welcome to React Router!
+# 🧠 Renalyze - AI Resume Analyzer
 
-A modern, production-ready template for building full-stack React applications using React Router.
-
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/remix-run/react-router-templates/tree/main/default)
-
-## Features
-
-- 🚀 Server-side rendering
-- ⚡️ Hot Module Replacement (HMR)
-- 📦 Asset bundling and optimization
-- 🔄 Data loading and mutations
-- 🔒 TypeScript by default
-- 🎉 TailwindCSS for styling
-- 📖 [React Router docs](https://reactrouter.com/)
-
-## Getting Started
-
-### Installation
-
-Install the dependencies:
-
-```bash
-npm install
-```
-
-### Development
-
-Start the development server with HMR:
-
-```bash
-npm run dev
-```
-
-Your application will be available at `http://localhost:5173`.
-
-## Building for Production
-
-Create a production build:
-
-```bash
-npm run build
-```
-
-## Deployment
-
-### Docker Deployment
-
-To build and run using Docker:
-
-```bash
-docker build -t my-app .
-
-# Run the container
-docker run -p 3000:3000 my-app
-```
-
-The containerized application can be deployed to any platform that supports Docker, including:
-
-- AWS ECS
-- Google Cloud Run
-- Azure Container Apps
-- Digital Ocean App Platform
-- Fly.io
-- Railway
-
-### DIY Deployment
-
-If you're familiar with deploying Node applications, the built-in app server is production-ready.
-
-Make sure to deploy the output of `npm run build`
-
-```
-├── package.json
-├── package-lock.json (or pnpm-lock.yaml, or bun.lockb)
-├── build/
-│   ├── client/    # Static assets
-│   └── server/    # Server-side code
-```
-
-## Styling
-
-This template comes with [Tailwind CSS](https://tailwindcss.com/) already configured for a simple default starting experience. You can use whatever CSS framework you prefer.
+**Renalyze** is an AI-powered Resume Analyzer that helps users improve their resumes with actionable insights. Built using **React** and **Puter.js**, it offers a seamless, interactive web experience where users can upload their resumes and receive smart analysis backed by modern AI technologies.
 
 ---
 
-Built with ❤️ using React Router.
+## 🚀 Features
+
+- 📄 **Resume Upload**: Drag-and-drop or browse to upload your resume in PDF format.
+- 🧠 **AI-Powered Analysis**: Instantly analyze resumes using AI models to evaluate formatting, keyword relevance, and impact.
+- ✅ **Actionable Feedback**: Get suggestions on how to improve structure, wording, and clarity.
+- 🔍 **Keyword Matching**: Compare your resume against a job description to highlight matching and missing keywords.
+- 📊 **Score & Insights**: Get an overall score with detailed breakdowns.
+- 💡 **Smart Suggestions**: Receive tips for rewording, reorganizing, and enriching your resume.
+
+---
+
+## 🛠️ Tech Stack
+
+| Layer       | Technology          |
+|-------------|---------------------|
+| Frontend    | [React](https://reactjs.org/) |
+| Runtime     | [Puter.js](https://docs.puter.com/) |
+| Styling     | Tailwind CSS |
+| File Parsing| `PDF.js` |
+| AI Engine   | Local or remote integration via Puter AI APIs or custom models |
+
+---
+
+## 📦 Installation
+
+```bash
+git clone https://github.com/Regestrac/Renalyze--AI-Resume-Analyzer.git
+cd Renalyze--AI-Resume-Analyzer
+npm install
+npm run dev
+```
+
+---
+
+## 🧪 Usage
+
+1. Run the development server:
+   ```bash
+   npm run dev
+   ```
+2. Open your browser and go to `http://localhost:5173/`
+3. Upload your resume and start analyzing!
+
+---
+
+## 📄 License
+
+This project is licensed under the [MIT License](LICENSE).
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! Please open an issue or submit a pull request for any bugs, features, or improvements.
