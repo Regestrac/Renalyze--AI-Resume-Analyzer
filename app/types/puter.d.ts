@@ -56,6 +56,7 @@ interface AIResponse {
     content: string | any[];
     refusal: null | string;
     annotations: any[];
+    stop_reason?: string;
   };
   logprobs: null | any;
   finish_reason: string;
@@ -66,4 +67,10 @@ interface AIResponse {
     cost: number;
   }[];
   via_ai_chat_service: boolean;
+  error?: {
+    delegate: string;
+    message: string;
+    status: number;
+  };
+  success: boolean;
 }

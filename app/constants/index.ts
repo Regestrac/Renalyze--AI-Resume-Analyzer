@@ -154,5 +154,5 @@ export const prepareInstructions = ({ jobTitle, jobDescription }: InstructionsTy
   Provide the feedback using the following format: ${AIResponseFormat}
   Return the analysis as a JSON object, without any other text and without the backticks.
   Do not include any other text or comments.
-  For clarity today's date is ${new Date().toString()}.`
+  Do not mention about dates.`
 );
