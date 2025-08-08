@@ -349,8 +349,8 @@ export const usePuterStore = create<PuterStoreType>((set, get) => {
           ],
         },
       ],
-      { model: "claude-3-7-sonnet" }
-    ) as Promise<AIResponse | undefined>;
+      { model: "claude-3-5-sonnet" },
+    ) as Promise<AIResponse>;
   };
 
   const img2txt = async (image: string | File | Blob, testMode?: boolean) => {
