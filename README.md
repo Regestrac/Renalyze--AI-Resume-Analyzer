@@ -30,8 +30,8 @@
 ## 🌐 Live Demo - Deployments
 
 - [Puter App](https://puter.com/app/renalyze-ai-resume-analyzer)
-- [Puter Site](renalyze-ai-resume-analyzer-0x1mr.puter.site)
-- [Netlify](renalyze-ai-resume-analyzer.netlify.app)
+- [Puter Site](https://renalyze-ai-resume-analyzer-0x1mr.puter.site)
+- [Netlify](https://renalyze-ai-resume-analyzer.netlify.app)
 
 ---
 
